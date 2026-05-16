@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CKova Systems — Operational Automation & Infrastructure</title>
+  
+  <meta name="description" content="CKova Systems builds intelligent automation pipelines and digital environments engineered for operational efficiency and seamless scaling." />
+  
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ── BASE THEME (LIGHT MODE) ── */
+    :root {
+      --pine: #0C3B2E;
+      --sage: #6D9773;
+      --tan: #BB8A52;
+      --yellow: #FFBA00;
+      --white: #FFFFFF;
+      
+      --bg-main: #F9F8F6;
+      --bg-card: #FFFFFF;
+      --nav-bg: rgba(249, 248, 246, 0.9);
+      
+      --text-main: #1A201C;
+      --text-muted: #5A6B60;
+      --text-hero: var(--white);
+      
+      --border-subtle: #E5E0D8;
+      --shadow-soft: 0 20px 40px rgba(12, 59, 46, 0.08);
+      --shadow-hover: 0 30px 60px rgba(12, 59, 46, 0.12);
+      
+      --hero-bg: var(--pine);
+      --arch-main: var(--sage);
+      --arch-sm: var(--tan);
+      
+      --serif: 'Playfair Display', serif;
+      --sans: 'Plus Jakarta Sans', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    /* ── DARK MODE OVERRIDES ── */
+    [data-theme="dark"] {
+      --bg-main: #0A0A0A;
+      --bg-card: #141414;
+      --nav-bg: rgba(10, 10, 10, 0.85);
+      
+      --text-main: #EAEAEA;
+      --text-muted: #88928A;
+      --text-hero: #EAEAEA;
+      
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --shadow-soft: 0 30px 60px rgba(0,0,0,0.8);
+      --shadow-hover: 0 20px 40px rgba(0,0,0,0.6);
+      
+      --hero-bg: var(--bg-main);
+      --arch-main: var(--pine);
+      --arch-sm: var(--sage);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* ── NAVIGATION ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 4rem;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+    nav.scrolled {
+      padding: 1rem 4rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-logo {
+      font-family: var(--serif); font-size: 1.4rem; font-weight: 700;
+      color: var(--text-main); text-decoration: none; letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--tan); font-style: italic; }
+    
+    .nav-right { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+      text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em;
+      position: relative; padding-bottom: 4px; transition: color 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--text-main); }
+    .nav-links a::after {
+      content: ''; position: absolute; left: 0; bottom: 0;
+      width: 0%; height: 2px; background: var(--yellow);
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      background: transparent; border: 1px solid var(--border-subtle);
+      border-radius: 50%; width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-main); transition: all 0.3s ease;
+    }
+    .theme-toggle:hover { background: rgba(109, 151, 115, 0.1); border-color: var(--sage); }
+    .theme-toggle svg { width: 18px; height: 18px; fill: currentColor; }
+    .icon-sun { display: none; }
+    .icon-moon { display: block; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
+
+    /* ── HERO SECTION ── */
+    .hero {
+      position: relative; background: var(--hero-bg);
+      padding: 12rem 4rem 14rem 4rem; overflow: hidden;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background-color 0.4s ease;
+    }
+    
+    .hero-arch-bg {
+      position: absolute; right: 5%; top: -10%;
+      width: 450px; height: 700px; background: var(--arch-main);
+      border-radius: 225px 225px 0 0; opacity: 0.85;
+      animation: gentleFloat 8s ease-in-out infinite alternate;
+      transition: background-color 0.4s ease;
+    }
+    .hero-arch-sm {
+      position: absolute; right: 28%; bottom: 10%;
+      width: 200px; height: 350px; background: var(--arch-sm);
+      border-radius: 100px 100px 0 0; box-shadow: -20px 20px 60px rgba(0,0,0,0.3);
+      transition: background-color 0.4s ease;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 700px; }
+    .hero-tag {
+      font-size: 0.8rem; font-weight: 700; color: var(--yellow);
+      letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .hero-tag::before { content: ''; width: 30px; height: 2px; background: var(--yellow); }
+    .hero h1 {
+      font-family: var(--serif); font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 500; line-height: 1.1; margin-bottom: 1.5rem;
+      color: var(--text-hero); transition: color 0.4s ease;
+    }
+    .hero h1 i { font-style: italic; color: var(--tan); }
+    .hero p {
+      font-size: 1.1rem; color: var(--text-hero); opacity: 0.85; max-width: 580px;
+      line-height: 1.8; margin-bottom: 2.5rem; transition: color 0.4s ease;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 1.1rem 2.5rem; border-radius: 50px;
+      font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-sage { background: var(--sage); color: var(--white); }
+    .btn-sage:hover {
+      background: var(--tan); color: var(--white);
+      transform: translateY(-3px); box-shadow: 0 10px 20px rgba(187, 138, 82, 0.3);
+    }
+
+    /* ── TARGETING BAR ── */
+    .target-bar {
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--bg-card); padding: 1.5rem 2rem;
+      display: flex; justify-content: center; align-items: center;
+      transition: all 0.4s ease; position: relative; z-index: 5;
+    }
+    .target-list {
+      display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; max-width: 1200px;
+    }
+    .target-item {
+      font-family: var(--mono); font-size: 0.75rem; font-weight: 600;
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;
+      display: flex; align-items: center; gap: 1.5rem;
+    }
+    .target-item span { color: var(--sage); font-size: 1.2rem; line-height: 0; margin-top: -2px; }
+
+    /* ── SECTIONS SHARED ── */
+    section { padding: 8rem 4rem; max-width: 1300px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 5rem; }
+    .section-label {
+      font-size: 0.85rem; font-weight: 700; color: var(--sage);
+      letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .section-title { font-family: var(--serif); font-size: 3rem; color: var(--text-main); line-height: 1.2; }
+
+    /* ── METHODOLOGY (CKOVA FLOW) ── */
+    .flow-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; }
+    .flow-row {
+      display: grid; grid-template-columns: 100px 1fr; gap: 2rem;
+      padding: 2.5rem 0; border-bottom: 1px solid var(--border-subtle);
+      align-items: start; transition: all 0.3s ease;
+    }
+    .flow-row:last-child { border-bottom: none; }
+    .flow-row:hover { transform: translateX(10px); }
+    .flow-num { font-family: var(--mono); font-size: 1.2rem; color: var(--tan); font-weight: 700; }
+    .flow-text h3 { font-family: var(--serif); font-size: 1.8rem; color: var(--text-main); margin-bottom: 0.5rem; }
+    .flow-text p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; }
+
+    /* ── COLORED CAPABILITIES CARDS ── */
+    .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+    
+    .bento-card {
+      padding: 3.5rem 2.5rem; border-radius: 24px;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; overflow: hidden; box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .bento-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+
+    /* Card Specific Colors */
+    .card-sage { background: radial-gradient(circle at top right, #7DAB84, var(--sage)); color: var(--white); }
+    .card-pine { background: radial-gradient(circle at top right, #114F3D, var(--pine)); color: var(--white); }
+    .card-tan { background: radial-gradient(circle at top right, #CC975D, var(--tan)); color: var(--white); }
+    .card-yellow { background: radial-gradient(circle at top right, #FFC72C, var(--yellow)); color: var(--pine); }
+
+    .bento-icon {
+      width: 60px; height: 60px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 2rem; font-family: var(--serif); font-size: 1.5rem;
+    }
+    
+    .card-sage .bento-icon, .card-pine .bento-icon, .card-tan .bento-icon { background: rgba(255, 255, 255, 0.15); color: var(--white); }
+    .card-yellow .bento-icon { background: rgba(12, 59, 46, 0.1); color: var(--pine); }
+
+    .bento-card h3 { font-family: var(--serif); font-size: 1.6rem; margin-bottom: 1rem; }
+    
+    .card-sage p, .card-pine p, .card-tan p { color: rgba(255, 255, 255, 0.85); }
+    .card-yellow p { color: rgba(12, 59, 46, 0.85); }
+    .bento-card p { font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem; }
+    
+    .tag-container { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      font-size: 0.72rem; font-weight: 600; padding: 0.4rem 1rem;
+      border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    
+    .card-sage .tag, .card-pine .tag, .card-tan .tag {
+      background: rgba(255, 255, 255, 0.1); color: var(--white); border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-yellow .tag {
+      background: rgba(12, 59, 46, 0.05); color: var(--pine); border: 1px solid rgba(12, 59, 46, 0.15);
+    }
+
+    /* ── SYSTEM ARCHITECTURE PROCESS ── */
+    .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem 2rem; }
+    .process-card { border-top: 2px solid var(--border-subtle); padding-top: 1.5rem; position: relative; transition: all 0.3s ease; }
+    .process-card::before {
+      content: ''; position: absolute; top: -2px; left: 0; width: 0; height: 2px;
+      background: var(--sage); transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .process-card:hover::before { width: 100%; }
+    .process-card:hover { transform: translateY(-5px); }
+    .process-num { font-family: var(--mono); font-size: 0.85rem; color: var(--sage); margin-bottom: 0.8rem; display: block; font-weight: 700; }
+    .process-card h3 { font-family: var(--serif); font-size: 1.4rem; color: var(--text-main); margin-bottom: 0.5rem; }
+    .process-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── DEPLOYMENT ARCHIVE ── */
+    .deployment-list { display: flex; flex-direction: column; gap: 2rem; }
+    .deploy-card {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: 24px; padding: 3rem; display: grid; grid-template-columns: 1fr;
+      gap: 2rem; box-shadow: var(--shadow-soft); transition: all 0.4s ease;
+    }
+    .deploy-card:hover { border-color: var(--sage); transform: translateX(10px); }
+    .deploy-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1.5rem; margin-bottom: 1.5rem; }
+    .deploy-title h3 { font-family: var(--serif); font-size: 2rem; color: var(--text-main); margin-bottom: 0.5rem; }
+    .deploy-title span { font-size: 0.8rem; font-weight: 700; color: var(--tan); letter-spacing: 0.1em; text-transform: uppercase; }
+    .deploy-meta { text-align: right; font-family: var(--mono); font-size: 0.85rem; color: var(--sage); }
+    
+    .deploy-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+    .deploy-col h4 { font-family: var(--mono); font-size: 0.75rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+    .deploy-col p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+
+    /* ── FLOATING INTAKE CARD ── */
+    .intake-wrapper {
+      position: relative; max-width: 1100px; margin: 2rem auto 6rem auto;
+      padding: 0 2rem; z-index: 10;
+    }
+    .intake-card {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: 30px; padding: 5rem;
+      display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: start;
+      box-shadow: var(--shadow-soft); transition: all 0.4s ease;
+    }
+    .intake-text h2 { font-family: var(--serif); font-size: 3rem; color: var(--text-main); margin-bottom: 1rem; line-height: 1.1; }
+    .intake-text p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.8; margin-bottom: 2rem; }
+    
+    .quick-form input, .quick-form textarea {
+      width: 100%; padding: 1.2rem 1.5rem; margin-bottom: 1rem;
+      background: var(--bg-main); border: 1px solid var(--border-subtle);
+      border-radius: 12px; font-family: var(--sans); font-size: 0.95rem;
+      color: var(--text-main); transition: all 0.3s ease;
+    }
+    .quick-form textarea { resize: vertical; min-height: 120px; }
+    .quick-form input:focus, .quick-form textarea:focus {
+      outline: none; border-color: var(--sage);
+      box-shadow: 0 0 0 3px rgba(109, 151, 115, 0.15);
+    }
+    .btn-yellow { width: 100%; background: var(--yellow); color: var(--pine); padding: 1.3rem; margin-top: 0.5rem; }
+    .btn-yellow:hover { background: var(--pine); color: var(--yellow); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg-card); color: var(--text-main);
+      padding: 4rem; text-align: center; border-top: 1px solid var(--border-subtle); transition: all 0.4s ease;
+    }
+    .footer-logo { font-family: var(--serif); font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; }
+    .footer-logo span { color: var(--tan); }
+    .footer-links { margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ── ANIMATIONS & MOBILE ── */
+    @keyframes gentleFloat { 0% { transform: translateY(0); } 100% { transform: translateY(-30px); } }
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.5rem 2rem; }
+      .nav-links { display: none; }
+      .hero { padding: 8rem 2rem 12rem 2rem; }
+      .hero-arch-bg { width: 300px; height: 500px; right: -50px; opacity: 0.4; }
+      .hero-arch-sm { display: none; }
+      .target-item { font-size: 0.65rem; }
+      .flow-row { grid-template-columns: 1fr; gap: 0.5rem; }
+      .deploy-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .deploy-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .deploy-meta { text-align: left; }
+      .intake-wrapper { padding: 0 1rem; }
+      .intake-card { grid-template-columns: 1fr; padding: 2.5rem; gap: 3rem; }
+      section { padding: 5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <a href="#" class="nav-logo">CKova<span>Systems.</span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#capabilities">Architecture</a></li>
+        <li><a href="#deployments">Archive</a></li>
+        <li><a href="#intake">Consultation</a></li>
+      </ul>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-arch-bg"></div>
+    <div class="hero-arch-sm"></div>
+    
+    <div class="hero-content">
+      <div class="hero-tag reveal">Systems Engineering Consultancy</div>
+      <h1 class="reveal" style="transition-delay: 100ms;">
+        Automate operations.<br><i>Scale</i> efficiently.
+      </h1>
+      <p class="reveal" style="transition-delay: 200ms;">
+        We build intelligent automation pipelines and AI infrastructure designed to eliminate operational bottlenecks, route data seamlessly, and drive business process efficiency.
+      </p>
+      <div class="reveal" style="transition-delay: 300ms;">
+        <a href="#intake" class="btn btn-sage">Request Systems Audit</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="target-bar reveal">
+    <div class="target-list">
+      <div class="target-item">Real Estate Operations <span>✦</span></div>
+      <div class="target-item">Web3 & Crypto Teams <span>✦</span></div>
+      <div class="target-item">Media Operations <span>✦</span></div>
+      <div class="target-item">Service Businesses <span>✦</span></div>
+      <div class="target-item">Digital Infrastructure</div>
+    </div>
+  </div>
+
+  <section id="methodology">
+    <div class="section-header reveal">
+      <span class="section-label">Proprietary Framework</span>
+      <h2 class="section-title">CKova Flow Architecture.</h2>
+    </div>
+    
+    <div class="flow-container">
+      <div class="flow-row reveal">
+        <div class="flow-num">01 /</div>
+        <div class="flow-text">
+          <h3>Capture</h3>
+          <p>Consolidating inbound data sets, lead inquiries, and fragmented communication channels into a centralized, single-source operational hub.</p>
+        </div>
+      </div>
+      <div class="flow-row reveal">
+        <div class="flow-num">02 /</div>
+        <div class="flow-text">
+          <h3>Analyze</h3>
+          <p>Deploying advanced LLM integrations to instantly evaluate sentiment, qualify data, and categorize inputs without manual human intervention.</p>
+        </div>
+      </div>
+      <div class="flow-row reveal">
+        <div class="flow-num">03 /</div>
+        <div class="flow-text">
+          <h3>Route</h3>
+          <p>Mapping conditional logic to ensure critical data is pushed cleanly across your API-connected infrastructure (CRMs, Slack, Zendesk, Airtable).</p>
+        </div>
+      </div>
+      <div class="flow-row reveal">
+        <div class="flow-num">04 /</div>
+        <div class="flow-text">
+          <h3>Trigger</h3>
+          <p>Executing intelligent, automated responses and secondary workflows (like dynamic messaging and task assignment) to achieve near-zero response times.</p>
+        </div>
+      </div>
+      <div class="flow-row reveal">
+        <div class="flow-num">05 /</div>
+        <div class="flow-text">
+          <h3>Optimize</h3>
+          <p>Continuous system monitoring and NOC-level incident response to ensure high-availability and zero friction in your scaling operational environment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities">
+    <div class="section-header reveal">
+      <span class="section-label">Core Infrastructure</span>
+      <h2 class="section-title">Operational Capabilities.</h2>
+    </div>
+
+    <div class="bento-grid">
+      <div class="bento-card card-sage reveal">
+        <div class="bento-icon">I</div>
+        <h3>Automation & Workflow</h3>
+        <p>Mapping complex business logic into multi-step, error-resistant automation pipelines.</p>
+        <div class="tag-container">
+          <span class="tag">n8n</span>
+          <span class="tag">Make.com</span>
+          <span class="tag">Zapier</span>
+          <span class="tag">Workflow Triggers</span>
+          <span class="tag">Conditional Routing</span>
+          <span class="tag">Data Flow Design</span>
+          <span class="tag">Pipeline Architecture</span>
+          <span class="tag">Error Handling & Debugging</span>
+        </div>
+      </div>
+      
+      <div class="bento-card card-pine reveal" style="transition-delay: 100ms;">
+        <div class="bento-icon">II</div>
+        <h3>AI & LLM Infrastructure</h3>
+        <p>Deploying intelligent processing with top-tier language models and advanced prompt engineering.</p>
+        <div class="tag-container">
+          <span class="tag">OpenAI API</span>
+          <span class="tag">Groq API</span>
+          <span class="tag">Anthropic/Claude API</span>
+          <span class="tag">Gemini</span>
+          <span class="tag">AI Prompt Engineering</span>
+          <span class="tag">LLM-Driven Task Automation</span>
+          <span class="tag">Sentiment Analysis Pipelines</span>
+        </div>
+      </div>
+
+      <div class="bento-card card-tan reveal">
+        <div class="bento-icon">III</div>
+        <h3>Bots & Messaging</h3>
+        <p>Architecting conversational flows and logic mapping for enterprise messaging platforms.</p>
+        <div class="tag-container">
+          <span class="tag">WhatsApp API</span>
+          <span class="tag">Telegram API</span>
+          <span class="tag">Conversation Flow</span>
+          <span class="tag">Logic Mapping</span>
+        </div>
+      </div>
+
+      <div class="bento-card card-yellow reveal" style="transition-delay: 100ms;">
+        <div class="bento-icon">IV</div>
+        <h3>Data & Integration</h3>
+        <p>Bridging platforms via custom HTTP requests into highly dynamic database environments.</p>
+        <div class="tag-container">
+          <span class="tag">Google Sheets CRM</span>
+          <span class="tag">Airtable</span>
+          <span class="tag">Monday.com</span>
+          <span class="tag">Google Workspace</span>
+          <span class="tag">API Integration</span>
+          <span class="tag">HTTP Request Handling</span>
+          <span class="tag">RSS Feed Processing</span>
+          <span class="tag">Serper API</span>
+        </div>
+      </div>
+
+      <div class="bento-card card-pine reveal">
+        <div class="bento-icon">V</div>
+        <h3>Development</h3>
+        <p>Structuring foundational code, interactive interfaces, and decentralized web logic.</p>
+        <div class="tag-container">
+          <span class="tag">Python Automation</span>
+          <span class="tag">HTML/CSS/JavaScript</span>
+          <span class="tag">Frontend Interfaces</span>
+          <span class="tag">Web3/Blockchain Basics</span>
+        </div>
+      </div>
+
+      <div class="bento-card card-sage reveal" style="transition-delay: 100ms;">
+        <div class="bento-icon">VI</div>
+        <h3>Network & IT</h3>
+        <p>Maintaining high-availability infrastructure, active monitoring, and incident response.</p>
+        <div class="tag-container">
+          <span class="tag">NOC Operations</span>
+          <span class="tag">Network Monitoring</span>
+          <span class="tag">Incident Response</span>
+          <span class="tag">Cybersecurity</span>
+          <span class="tag">Digital Risk Awareness</span>
+        </div>
+      </div>
+
+      <div class="bento-card card-tan reveal">
+        <div class="bento-icon">VII</div>
+        <h3>Voice & Media AI</h3>
+        <p>Integrating synthetic voice generation and machine learning media tools into content workflows.</p>
+        <div class="tag-container">
+          <span class="tag">ElevenLabs</span>
+          <span class="tag">NotebookLM</span>
+          <span class="tag">AI Content Pipelines</span>
+        </div>
+      </div>
+
+      <div class="bento-card card-yellow reveal" style="transition-delay: 100ms;">
+        <div class="bento-icon">VIII</div>
+        <h3>Content & Media Tools</h3>
+        <p>Supporting media assets utilizing industry-standard assembly software.</p>
+        <div class="tag-container">
+          <span class="tag">CapCut</span>
+          <span class="tag">DaVinci Resolve</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process" style="padding-top: 2rem;">
+    <div class="section-header reveal">
+      <span class="section-label">How We Build</span>
+      <h2 class="section-title">System Architecture Process.</h2>
+    </div>
+
+    <div class="process-grid">
+      <div class="process-card reveal">
+        <span class="process-num">01.</span>
+        <h3>Discovery</h3>
+        <p>We audit your existing tool stack and map out the exact operational bottlenecks causing friction and dropped revenue.</p>
+      </div>
+      <div class="process-card reveal" style="transition-delay: 100ms;">
+        <span class="process-num">02.</span>
+        <h3>System Mapping</h3>
+        <p>Drafting a comprehensive blueprint of your new automated data flow, defining triggers, conditions, and API endpoints.</p>
+      </div>
+      <div class="process-card reveal" style="transition-delay: 200ms;">
+        <span class="process-num">03.</span>
+        <h3>Prototype</h3>
+        <p>Building the isolated core logic of the automation pipeline to ensure secure, rapid data transfer without risking live environments.</p>
+      </div>
+      <div class="process-card reveal">
+        <span class="process-num">04.</span>
+        <h3>Integration</h3>
+        <p>Connecting the validated prototype directly into your CRMs, communication channels, and internal databases.</p>
+      </div>
+      <div class="process-card reveal" style="transition-delay: 100ms;">
+        <span class="process-num">05.</span>
+        <h3>Deployment</h3>
+        <p>Pushing the system to production, handing over a fully orchestrated, automated infrastructure ready to scale.</p>
+      </div>
+      <div class="process-card reveal" style="transition-delay: 200ms;">
+        <span class="process-num">06.</span>
+        <h3>Optimization</h3>
+        <p>Continuous monitoring, error-handling refinement, and iteration to maintain high availability and perfect execution.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="deployments">
+    <div class="section-header reveal">
+      <span class="section-label">Track Record</span>
+      <h2 class="section-title">Deployment Archive.</h2>
+    </div>
+
+    <div class="deployment-list">
+      
+      <div class="deploy-card reveal">
+        <div class="deploy-header">
+          <div class="deploy-title">
+            <span>Client Project · Real Estate Operations</span>
+            <h3>WhatsApp Architecture</h3>
+          </div>
+          <div class="deploy-meta">Status: <strong>Production Live</strong><br>Deployed: 2025</div>
+        </div>
+        <div class="deploy-grid">
+          <div class="deploy-col">
+            <h4>The Operational Bottleneck</h4>
+            <p>Manual lead handling and qualification were causing severe delays in response times, resulting in lost deals and fragmented client data.</p>
+          </div>
+          <div class="deploy-col">
+            <h4>The System Implemented</h4>
+            <p>Architected a conversational infrastructure using the WhatsApp API, routed through an n8n pipeline, and driven by custom OpenAI prompts.</p>
+          </div>
+          <div class="deploy-col">
+            <h4>The Business Outcome</h4>
+            <p>Achieved instantaneous, 24/7 automated lead routing, successfully capturing and logging all dynamic property inquiries directly into a Google Sheets CRM backend.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="deploy-card reveal">
+        <div class="deploy-header">
+          <div class="deploy-title">
+            <span>Internal Build · Media Operations</span>
+            <h3>Automated Intelligence Pipeline</h3>
+          </div>
+          <div class="deploy-meta">Status: <strong>Deployed</strong><br>Deployed: 2024–2025</div>
+        </div>
+        <div class="deploy-grid">
+          <div class="deploy-col">
+            <h4>The Operational Bottleneck</h4>
+            <p>Gathering, reading, and extracting actionable sentiment from massive arrays of inbound RSS feeds required unsustainable manual curation.</p>
+          </div>
+          <div class="deploy-col">
+            <h4>The System Implemented</h4>
+            <p>Built a fully autonomous data pipeline integrating the Telegram API with Groq and Gemini LLMs for real-time natural language processing.</p>
+          </div>
+          <div class="deploy-col">
+            <h4>The Business Outcome</h4>
+            <p>Eliminated manual curation entirely. The system now automatically triggers conditional multi-service alerts and formats synthesized intelligence digests for immediate delivery.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="intake-wrapper" id="intake">
+    <div class="intake-card reveal">
+      <div class="intake-text">
+        <h2>Systems Consultation & Automation Audit.</h2>
+        <p>Outline your current operational infrastructure below. Our team will review your parameters to identify bottlenecks and propose an integrated automation strategy.</p>
+      </div>
+      <form class="quick-form" id="webhook-form">
+        <input type="text" placeholder="Full Name or Organization" required />
+        <input type="email" placeholder="Preferred Email Address" required />
+        <input type="text" placeholder="Company or Project Type (e.g., Real Estate, SaaS)" required />
+        <input type="text" placeholder="Current Tools (e.g., Make, n8n, Zendesk, Airtable)" />
+        <textarea placeholder="Describe your biggest operational bottleneck or desired automation goal..." required></textarea>
+        <button type="submit" class="btn btn-yellow">Request Systems Audit</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">CKova<span>Systems.</span></div>
+    <p style="color: var(--sage); font-size: 0.9rem; margin-top: 0.5rem;">Behavioral Automation & Digital Infrastructure</p>
+    <div class="footer-links">
+      © 2026 CKova Systems. Lead Architect: G.C.C. | Operated out of Abuja, Nigeria.
+    </div>
+  </footer>
+
+  <script>
+    // ── THEME TOGGLE LOGIC ──
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const currentTheme = localStorage.getItem('theme');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+    if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+      let theme = 'light';
+      if (!document.documentElement.hasAttribute('data-theme')) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        theme = 'dark';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+      localStorage.setItem('theme', theme);
+    });
+
+    // ── NAV SCROLL EFFECT ──
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // ── SCROLL ANIMATIONS ──
+    const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── FORM SUBMISSION ──
+    document.getElementById('webhook-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('button');
+      btn.innerText = 'Transmitting...';
+      btn.style.opacity = '0.8';
+      
+      setTimeout(() => {
+        btn.innerText = 'Received. Talk soon.';
+        btn.style.background = 'var(--sage)';
+        btn.style.color = '#FFFFFF';
+        btn.style.opacity = '1';
+        this.reset();
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
